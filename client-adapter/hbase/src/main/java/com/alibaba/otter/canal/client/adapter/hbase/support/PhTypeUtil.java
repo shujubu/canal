@@ -7,12 +7,10 @@ import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import com.alibaba.otter.canal.client.adapter.support.Util;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.joda.time.DateTime;
 
+import com.alibaba.otter.canal.client.adapter.support.Util;
 import com.google.common.math.LongMath;
-import org.joda.time.DateTimeZone;
 
 /**
  * Phoenix类型转换工具类
@@ -132,8 +130,10 @@ public class PhTypeUtil {
             } else if (b[0] == 0) {
                 v = false;
             }
-        } else if (phType == PhType.TIME || phType == PhType.DATE) {
-            v = new Date(decodeLong(b, 0));
+        } else if (phType == PhType.DATE) {
+            v = new java.sql.Date(decodeLong(b, 0));
+        } else if (phType == PhType.TIME) {
+            v = new java.sql.Time(decodeLong(b, 0));
         } else if (phType == PhType.TIMESTAMP) {
             long millisDeserialized = decodeLong(b, 0);
             Timestamp ts = new Timestamp(millisDeserialized);
